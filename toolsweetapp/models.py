@@ -15,5 +15,5 @@ class FLX_Log(models.Model):
     Objeto = models.CharField(max_length=100)
     Mensaje = models.CharField(max_length=8000)
 
-    def __str__(self):
-        return f"{self.Evento} - {self.Fecha}"
+    class Meta:
+        db_table = 'FLX_Log'  # Explicitly specify the table name

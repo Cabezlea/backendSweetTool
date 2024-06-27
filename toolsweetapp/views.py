@@ -9,25 +9,35 @@ from .serializers import FLXLogSerializer
 #Create views here
 
 class TestAPIView(APIView):
-    def get(self, request, format=None):
-        start_time = request.query_params.get('start_time')
-        end_time = request.query_params.get('end_time')
-        keyword = request.query_params.get('keyword', '')
-        location = request.query_params.get('location', '')
+    def get(self, request):
+        # Get search parameters from the request
+        date = request.GET.get('date')
+        start_time = request.GET.get('start_time')
+        end_time = request.GET.get('end_time')
+        receipt_number = request.GET.get('receipt_number')
+        keyword = request.GET.get('keyword')
+        location = request.GET.get('location')
 
-        if not start_time or not end_time:
-            return Response({"error": "Start time and end time are required."}, status=status.HTTP_400_BAD_REQUEST)
+        print(
+            f"Received parameters: date={date}, start_time={start_time}, end_time={end_time}, receipt_number={receipt_number}, keyword={keyword}, location={location}")
 
-        # Fetching data based on the parameters
-        query = Q(Fecha__range=[start_time, end_time])
+        # Filter data based on the search parameters
+        queryset = FLX_Log.objects.all()
 
+        if date:
+            queryset = queryset.filter(Fecha__date=date)
+        if start_time and end_time:
+            queryset = queryset.filter(Fecha__time__gte=start_time, Fecha__time__lte=end_time)
+        if receipt_number:
+            queryset = queryset.filter(Evento=receipt_number)
         if keyword:
-            query &= Q(Mensaje__icontains=keyword)
-
+            queryset = queryset.filter(Mensaje__icontains=keyword)
         if location:
-            query &= Q(Maquina__icontains=location)
+            queryset = queryset.filter(Maquina=location)
 
-        logs = FLX_Log.objects.filter(query)
-        serializer = FLXLogSerializer(logs, many=True)
+        if not queryset.exists():
+            return Response({"message": "No data found for the provided search criteria."},
+                            status=status.HTTP_404_NOT_FOUND)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = FLXLogSerializer(queryset, many=True)
+        return Response(serializer.data)
