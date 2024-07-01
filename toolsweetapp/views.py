@@ -5,6 +5,7 @@ from rest_framework import status
 from django.db.models import Q;
 from .models import FLX_Log
 from .serializers import FLXLogSerializer
+import re
 
 #Create views here
 
@@ -17,9 +18,10 @@ class TestAPIView(APIView):
         receipt_number = request.GET.get('receipt_number')
         keyword = request.GET.get('keyword')
         location = request.GET.get('location')
+        terminal = request.GET.get('terminal')
 
         print(
-            f"Received parameters: date={date}, start_time={start_time}, end_time={end_time}, receipt_number={receipt_number}, keyword={keyword}, location={location}")
+            f"Received parameters: date={date}, start_time={start_time}, end_time={end_time}, receipt_number={receipt_number}, keyword={keyword}, location={location}, terminal={terminal}")
 
         # Filter data based on the search parameters
         queryset = FLX_Log.objects.all()
@@ -35,6 +37,12 @@ class TestAPIView(APIView):
         if location:
             queryset = queryset.filter(Maquina=location)
 
+        if terminal:
+            # Extract the terminal number and filter based on the number after the first uppercase letter
+            terminal_number = re.findall(r'\d+', terminal)
+            if terminal_number:
+                terminal_number = terminal_number[0]
+                queryset = queryset.filter(Maquina__regex=r'^[A-Z]' + terminal_number)
         if not queryset.exists():
             return Response({"message": "No data found for the provided search criteria."},
                             status=status.HTTP_404_NOT_FOUND)
