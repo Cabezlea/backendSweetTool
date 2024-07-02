@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from toolsweetapp.views import TestAPIView
+from toolsweetapp.views import TestAPIView, LocationAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('toolsweetapp/api/test/', TestAPIView.as_view(), name='test-api')
+    path('toolsweetapp/api/test/', TestAPIView.as_view(), name='test-api'),
+    path('toolsweetapp/api/locations/', LocationAPIView.as_view(), name='location-api'),
 ]

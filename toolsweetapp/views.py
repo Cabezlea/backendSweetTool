@@ -2,12 +2,12 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import Q;
+from django.db.models import Q
 from .models import FLX_Log
 from .serializers import FLXLogSerializer
 import re
 
-#Create views here
+# Create views here
 
 class TestAPIView(APIView):
     def get(self, request):
@@ -35,7 +35,8 @@ class TestAPIView(APIView):
         if keyword:
             queryset = queryset.filter(Mensaje__icontains=keyword)
         if location:
-            queryset = queryset.filter(Maquina=location)
+            # This assumes location is a part like 'PUNTILLA' from 'C1PUNTILLA-PC'
+            queryset = queryset.filter(Maquina__regex=r'[A-Z]\d+' + location)
 
         if terminal:
             # Extract the terminal number and filter based on the number after the first uppercase letter
@@ -49,3 +50,17 @@ class TestAPIView(APIView):
 
         serializer = FLXLogSerializer(queryset, many=True)
         return Response(serializer.data)
+
+class LocationAPIView(APIView):
+    def get(self, request):
+        # Extract unique locations from the Maquina field
+        maquinas = FLX_Log.objects.values_list('Maquina', flat=True).distinct()
+        locations = set()
+
+        # Regex to extract location name after terminal number
+        for maquina in maquinas:
+            match = re.search(r'[A-Z]\d+([A-Z]+)', maquina)
+            if match:
+                locations.add(match.group(1))
+
+        return Response(list(locations), status=status.HTTP_200_OK)
