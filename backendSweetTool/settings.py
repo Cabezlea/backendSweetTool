@@ -80,12 +80,17 @@ WSGI_APPLICATION = 'backendSweetTool.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'toolSweetDB',  # Use the name of the database you just created
-        'USER': 'postgres',     # The username you created earlier
-        'PASSWORD': 'Pankace2003!',  # The password for the postgres user
-        'HOST': 'localhost',    # Assuming you are running the database locally
-        'PORT': '5432',         # Default port for PostgreSQL
+        'ENGINE': 'mssql',
+        'NAME': 'DBFREST',  # Use the name of the database you just created
+        'USER': 'icgadmin',     # The username you created earlier
+        'PASSWORD': 'masterkey',  # The password for the postgres user
+        'HOST': '172.17.1.13',    # Assuming you are running the database locally
+        'PORT': '',         # Default port for PostgreSQL
+
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'extra_params': 'TrustServerCertificate=yes;',
+        },
     }
 }
 
@@ -125,6 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -133,5 +139,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',  # This is your Vue.js frontend address
+    'http://localhost:5173',  # Vue.js frontend address
 ]
