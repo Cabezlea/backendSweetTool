@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'backendSweetTool.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql',
+        'ENGINE': 'sql_server.pyodbc',
         'NAME': 'DBFREST',  # Use the name of the database you just created
         'USER': 'icgadmin',     # The username you created earlier
         'PASSWORD': 'masterkey',  # The password for the postgres user
