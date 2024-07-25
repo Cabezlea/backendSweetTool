@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gcmm*2b!fbymx1jszbc8)gx=+p1()d(94cyn7f7iku8nj26nvr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -81,12 +81,10 @@ WSGI_APPLICATION = 'backendSweetTool.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'DBFREST',  # Use the name of the database you just created
-        'USER': 'icgadmin',     # The username you created earlier
-        'PASSWORD': 'masterkey',  # The password for the postgres user
-        'HOST': '172.17.1.13',    # Assuming you are running the database locally
-        'PORT': '',         # Default port for PostgreSQL
-
+        'NAME': 'DBFREST',
+        'USER': 'icgadmin',
+        'PASSWORD': 'masterkey',
+        'HOST': '172.17.1.13',
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
             'extra_params': 'TrustServerCertificate=yes;',
