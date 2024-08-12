@@ -81,19 +81,8 @@ WSGI_APPLICATION = 'backendSweetTool.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'DBFREST',
-        'USER': 'icgadmin',
-        'PASSWORD': 'masterkey',
-        'HOST': '172.17.1.13',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-            'extra_params': 'TrustServerCertificate=yes;',
-        },
-    },
-'flex': {
-        'ENGINE': 'sql_server.pyodbc',
         'NAME': 'FLX_BD',
-        'USER': 'icgadmin',  # assuming the same user and password; update if different
+        'USER': 'icgadmin',
         'PASSWORD': 'masterkey',
         'HOST': '172.17.1.13',
         'OPTIONS': {
