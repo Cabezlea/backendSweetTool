@@ -16,4 +16,4 @@ class FLX_Log(models.Model):
     Mensaje = models.CharField(max_length=8000)
 
     class Meta:
-        db_table = 'FLX_Log'  # Explicitly specify the table name
+        db_table = 'FLX_Log'
