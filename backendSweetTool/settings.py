@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'backendSweetTool.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'sql_server.pyodbc',
+        'ENGINE': 'mssql',
         'NAME': 'FLX_BD',
         'USER': 'icgadmin',
         'PASSWORD': 'masterkey',
